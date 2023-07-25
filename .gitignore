@@ -38,3 +38,5 @@ replay_pid*
 # Maven
 log/
 target/
+#my
+Screenshots/*.*
