@@ -1,5 +1,8 @@
 package org.resk.system;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Random;
 
 public class Render {
@@ -43,5 +46,20 @@ public class Render {
                 pixels[x + (y*width)] = color;
             }
         }
+    }
+    public void makeScreenShot(){
+        BufferedImage bi = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
+        for(int y = 0; y < height; y++ ){
+            for(int x = 0; x< width; x++){
+                bi.setRGB(x, y, pixels[x + (y*width)]);
+            }
+        }
+        File out = new File("Screenshots/" + System.currentTimeMillis() + "screenshot.png");
+        try {
+            ImageIO.write(bi, "png", out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
