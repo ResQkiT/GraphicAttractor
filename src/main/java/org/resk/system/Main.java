@@ -100,7 +100,7 @@ public class Main extends Canvas
 
     public static void main(String[] args) {
         Main main = new Main();
-        ColorLoader.init("src/main/java/org/resk/pattetns/rainbow.jpg");
+        ColorLoader.init("src/main/java/org/resk/patterns/rainbow.jpg");
         main.start();
 
         Point start_point = new Point(1, 0, 0,new RosselPoint(main.renderer));
