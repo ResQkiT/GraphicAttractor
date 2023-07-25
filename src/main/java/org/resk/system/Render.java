@@ -38,10 +38,9 @@ public class Render {
         if( (x < 0 || y<0) || (x > width || y > height)){
             return;
         }
-        for(int i_y = y; i_y <= y+size; i_y ++){
-            for(int i_x = x; i_x <= x+size; i_x ++){
-                if(color < pixels[x + (y*width)])
-                    pixels[x + (y*width)] = color;
+        for(int i_y = y; i_y < y+size; i_y++ ){
+            for(int i_x = x; i_x < x+size; i_x++ ){
+                pixels[x + (y*width)] = color;
             }
         }
     }
