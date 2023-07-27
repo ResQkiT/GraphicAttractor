@@ -1,7 +1,10 @@
 package org.resk.units;
 
+
 import org.resk.system.ColorLoader;
 import org.resk.system.Render;
+
+import java.util.ArrayList;
 
 import static java.lang.Math.sqrt;
 /*
@@ -13,12 +16,21 @@ QFFVSLMJJCCR
 LUFBBFISGJYS
 RALLTIOBDULT
  */
-public class PolynomialAttractorPoint implements PointType, EnableToGetNextPoint {
+public class PolynomialAttractorPoint  implements PointType, EnableToGetNextPoint {
     private Render render;
     private String pattern;
     private double scope = 500;
     private double[] odds = new double[12];
-
+    private ArrayList<ArrayList<Integer>> startedPoints = new ArrayList<>();
+    private int centerX;
+    private int centerY;
+    private int centerZ;
+    private final int vectorX = 1920 / 2;
+    private final int vectorY = (int) (1080 / 2.5);
+    private final int vectorZ = 1920 / 2;
+    private int dx = 0;
+    private int dy = 0;
+    private int dz = 0;
     public PolynomialAttractorPoint(Render render, String pattern) {
         this.pattern = pattern;
         this.render = render;
@@ -59,7 +71,41 @@ public class PolynomialAttractorPoint implements PointType, EnableToGetNextPoint
 
     @Override
     public void draw(double x, double y, double z) {
-        int color = ColorLoader.getColorByCoord(z * this.scope * 1.5 );
-        this.render.drawSquare((int)(x * this.scope), (int)(y * this.scope + 1000), 1, color);
+
+        Integer X = (int)(x * scope);
+        Integer Y = (int)(y * scope);
+        Integer Z = (int)(z * scope);
+        if(startedPoints.size() <= 100){
+
+            ArrayList<Integer> toAdd = new ArrayList<>();
+            toAdd.add(X);
+            toAdd.add(Y);
+            toAdd.add(Z);
+            startedPoints.add(toAdd);
+
+            int sumX = 0;
+            int sumY = 0;
+            int sumZ = 0;
+
+            for (ArrayList<Integer> ar : startedPoints) {
+                sumX += ar.get(0);
+                sumY += ar.get(1);
+                sumZ += ar.get(2);
+            }
+
+            this.centerX =  sumX / startedPoints.size();
+            this.centerY =  sumY / startedPoints.size();
+            this.centerZ =  sumZ / startedPoints.size();
+
+            this.dx = vectorX - centerX;
+            this.dy = vectorY - centerY;
+            this.dz = vectorZ - centerZ;
+
+        }else{
+            int color = ColorLoader.getColorByCoord(Z + this.dz);
+            this.render.drawSquare(X + this.dx, Y + this.dy, 1, color);
+        }
+
+
     }
 }

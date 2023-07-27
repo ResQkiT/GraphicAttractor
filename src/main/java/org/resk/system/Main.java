@@ -94,8 +94,6 @@ public class Main extends Canvas
     }
     private void init() {
         frame.setResizable(false);
-        this.addMouseMotionListener(new ScreenshotsAdapter(renderer));
-        this.addMouseListener(new ScreenshotsAdapter(renderer));
         frame.add(this);
         frame.pack();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -108,7 +106,7 @@ public class Main extends Canvas
         ColorLoader.init("src/main/java/org/resk/patterns/rainbow.jpg");
         main.start();
 
-        Point start_point = new Point(1, 0, 0,new RosselPoint(main.renderer));
+        Point start_point = new Point(1, 0, 0,new NAttractorPoint(main.renderer));
 
         while (main.running){
             Point new_point = start_point.getNext(0.001);

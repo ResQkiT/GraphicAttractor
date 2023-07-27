@@ -5,7 +5,6 @@ public class Point {
     private double y;
     private double z;
     private PointType lightweight;
-
     public Point(double x, double y, double z, PointType lightweight) {
         this.x = x;
         this.y = y;
