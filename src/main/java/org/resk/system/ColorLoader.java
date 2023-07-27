@@ -22,7 +22,7 @@ public class ColorLoader {
         }
     }
     public static int getColorByCoord(double c){
-        int r = (int)c;
+        int r = Math.abs((int)c);
         r = r % bi.getWidth();
         return bi.getRGB(r, 0);
     }

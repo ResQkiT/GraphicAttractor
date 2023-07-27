@@ -1,5 +1,8 @@
 package org.resk.system;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Random;
 
 public class Render {
@@ -35,13 +38,26 @@ public class Render {
         }
     }
     public void drawSquare(int x, int y, int size, int color){
-        if( (x < 0 || y<0) || (x > width || y > height)){
+        if( x < 1 || y< 1|| x >= width - 1 || y >= height -1){
             return;
         }
-        for(int i_y = y; i_y < y+size; i_y++ ){
-            for(int i_x = x; i_x < x+size; i_x++ ){
-                pixels[x + (y*width)] = color;
+
+        pixels[x + (y*width)] = color;
+    }
+  
+    public void makeScreenShot(){
+        BufferedImage bi = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
+        for(int y = 0; y < height; y++ ){
+            for(int x = 0; x< width; x++){
+                bi.setRGB(x, y, pixels[x + (y*width)]);
             }
         }
+        File out = new File("Screenshots/" + System.currentTimeMillis() + "screenshot.png");
+        try {
+            ImageIO.write(bi, "png", out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
