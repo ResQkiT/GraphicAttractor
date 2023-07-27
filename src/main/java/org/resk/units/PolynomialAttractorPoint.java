@@ -16,7 +16,7 @@ QFFVSLMJJCCR
 LUFBBFISGJYS
 RALLTIOBDULT
  */
-public class PolynomialAttractorPoint implements PointType, EnableToGetNextPoint {
+public class PolynomialAttractorPoint  implements PointType, EnableToGetNextPoint {
     private Render render;
     private String pattern;
     private double scope = 500;

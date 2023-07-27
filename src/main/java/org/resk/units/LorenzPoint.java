@@ -3,6 +3,8 @@ package org.resk.units;
 import org.resk.system.ColorLoader;
 import org.resk.system.Render;
 
+import java.util.ArrayList;
+
 public class LorenzPoint implements PointType, EnableToGetDeltaPoint{
     private double b =8.0/3.0;
     private double s = 10.0;
@@ -10,13 +12,16 @@ public class LorenzPoint implements PointType, EnableToGetDeltaPoint{
 
     private double scope = 20;
     private Render render;
-    private Integer minX = null;
-    private Integer minY = null;
-
-    private Integer minZ = null;
-
-    private Integer dx = null;
-    private Integer dy = null;
+    private ArrayList<ArrayList<Integer>> startedPoints = new ArrayList<>();
+    private int centerX;
+    private int centerY;
+    private int centerZ;
+    private final int vectorX = 1920 / 2;
+    private final int vectorY = (int) (1080 / 2.5);
+    private final int vectorZ = 1920 / 2;
+    private int dx = 0;
+    private int dy = 0;
+    private int dz = 0;
 
     public LorenzPoint(Render render) {
         this.render = render;
@@ -42,31 +47,44 @@ public class LorenzPoint implements PointType, EnableToGetDeltaPoint{
                 this);
     }
 
+    @Override
     public void draw(double x, double y, double z) {
-        int color = ColorLoader.getColorByCoord(z * this.scope * 1.5);
-        int relativeX = (int)(x * scope);
-        int relativeY = (int)(y * scope);
-        System.out.println("x: " + relativeX);
-        System.out.println("y: " + relativeY);
-        final int finalDeltaX = 500;
-        final int finalDelataY = 200;
-        boolean needRedraw = false;
-        if(minX == null || relativeX < minX){
-            minX = relativeX;
-            //необходима глобальная перерисовка
-            needRedraw = true;
+
+        Integer X = (int)(x * scope);
+        Integer Y = (int)(y * scope);
+        Integer Z = (int)(z * scope);
+        if(startedPoints.size() <= 100){
+
+            ArrayList<Integer> toAdd = new ArrayList<>();
+            toAdd.add(X);
+            toAdd.add(Y);
+            toAdd.add(Z);
+            startedPoints.add(toAdd);
+
+            int sumX = 0;
+            int sumY = 0;
+            int sumZ = 0;
+
+            for (ArrayList<Integer> ar : startedPoints) {
+                sumX += ar.get(0);
+                sumY += ar.get(1);
+                sumZ += ar.get(2);
+            }
+
+            this.centerX =  sumX / startedPoints.size();
+            this.centerY =  sumY / startedPoints.size();
+            this.centerZ =  sumZ / startedPoints.size();
+
+            this.dx = vectorX - centerX;
+            this.dy = vectorY - centerY;
+            this.dz = vectorZ - centerZ;
+
+        }else{
+            int color = ColorLoader.getColorByCoord(Z + this.dz);
+            this.render.drawSquare(X + this.dx, Y + this.dy, 1, color);
         }
-        if(minY == null|| relativeY < minY){
-            minY = relativeY;
-            //необходима глобальная перерисовка
-            needRedraw = true;
-        }
-        if(needRedraw){
-            render.clear();
-            dx = finalDeltaX - relativeX;
-            dy = finalDelataY - relativeY;
-        }
-        this.render.drawSquare((int)(relativeX + dx), (int)(relativeY + dy), 1, color);
+
+
     }
 
 
