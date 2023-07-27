@@ -108,7 +108,9 @@ public class Main extends Canvas
         ColorLoader.init("src/main/java/org/resk/patterns/rainbow.jpg");
         main.start();
 
+
         Point start_point = new Point(0, 0, 0,new PolynomialAttractorPoint(main.renderer, "RALLTIOBDULT" ));
+
 
         while (main.running){
             Point new_point = start_point.getNext(0.01);

@@ -41,8 +41,10 @@ public class Render {
         if( x < 1 || y< 1|| x >= width - 1 || y >= height -1){
             return;
         }
+
         pixels[x + (y*width)] = color;
     }
+  
     public void makeScreenShot(){
         BufferedImage bi = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
         for(int y = 0; y < height; y++ ){
