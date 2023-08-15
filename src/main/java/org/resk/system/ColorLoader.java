@@ -21,6 +21,7 @@ public class ColorLoader {
             throw new RuntimeException(e);
         }
     }
+
     public static int getColorByCoord(double c){
         int r = Math.abs((int)c);
         r = r % bi.getWidth();

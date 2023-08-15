@@ -23,16 +23,15 @@ public class Main extends Canvas
     private static final int HEIGHT = WIDTH / 16 * 9;
     private static final int SCALE = 1;
     private String title = "Game";
-    private boolean running = false;
+    private volatile boolean running = false;
     private BufferStrategy bs = null;
     private Graphics g = null;
-    public static Render renderer;
+    public volatile static Render renderer;
     private JFrame frame = new JFrame(title);
     private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     private int pixels[] = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
     public enum AttractorsEnum {
-
         Lorenz(new LorenzPoint(renderer)),
         Rossel(new RosselPoint(renderer)),
         NAttractor(new NAttractorPoint(renderer)),
@@ -48,7 +47,6 @@ public class Main extends Canvas
 
         public PointType getType() {
             return type;
-
         }
     }
     public Main() {
@@ -127,9 +125,13 @@ public class Main extends Canvas
         gradText.setBounds(13, 89, 164, 27);
         f.add(gradText);
 
-        final JComboBox<AttractorsEnum> comboBox = new JComboBox<>(AttractorsEnum.values());
-        comboBox.setBounds(204,47, 183, 27);
-        f.add(comboBox);
+        final JComboBox<AttractorsEnum> comboBoxType = new JComboBox<>(AttractorsEnum.values());
+        comboBoxType.setBounds(204,47, 183, 27);
+        f.add(comboBoxType);
+
+        final JComboBox<Patterns> comboBoxPattern = new JComboBox<>(  Patterns.values() );
+        comboBoxPattern.setBounds(204,89, 183, 27);
+        f.add(comboBoxPattern);
 
         JButton clearB = new JButton("Очистить");
         clearB.setLocation(208,518);
@@ -151,16 +153,17 @@ public class Main extends Canvas
             @Override
             public void actionPerformed(ActionEvent e) {
                 running = true;
-                final PointType pt = comboBox.getItemAt(comboBox.getSelectedIndex()).getType();
-
+                final PointType pt = comboBoxType.getItemAt(comboBoxType.getSelectedIndex()).getType();
+                final Patterns pattern = comboBoxPattern.getItemAt(comboBoxPattern.getSelectedIndex());
+                ColorLoader.init(pattern.getPath());
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Point start_point = new Point(0, 0, 0, pt);
+                        Point start_point = new Point(1, 0, 0, pt);
                         while (running){
 
                             Point new_point = start_point.getNext(0.0001);
-                            System.out.println(new_point);
+                            //System.out.println(new_point);
                             new_point.draw();
                             start_point = new_point;
                         }
