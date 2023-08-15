@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ColorLoader {
-    private static String path ="src/main/java/org/resk/pattetns/rainbow.jpg" ;
+    private static String path ="src/main/java/org/resk/patterns/rainbow.jpg" ;
     private static BufferedImage bi;
 
     public static void init(String path){
