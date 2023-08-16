@@ -108,6 +108,8 @@ public class Main extends Canvas
         frame.setResizable(false);
         frame.add(this);
         frame.pack();
+        this.addMouseMotionListener(new ScreenshotsAdapter(renderer));
+        this.addMouseListener(new ScreenshotsAdapter(renderer));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
