@@ -1,5 +1,7 @@
 package org.resk.system;
 
+import org.resk.system.commands.MakeScreenshotCommand;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -12,7 +14,7 @@ public class ScreenshotsAdapter extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        render.makeScreenShot();
+        new MakeScreenshotCommand(render).exec();
     }
 
     @Override

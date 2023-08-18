@@ -1,6 +1,8 @@
 package org.resk.system;
 
 
+import org.resk.system.commands.ClearCommand;
+import org.resk.system.commands.MakeScreenshotCommand;
 import org.resk.units.*;
 import org.resk.units.Point;
 
@@ -135,6 +137,16 @@ public class Main extends Canvas
         comboBoxPattern.setBounds(204,89, 183, 27);
         f.add(comboBoxPattern);
 
+        JButton screenshotButton = new JButton("Скриншот");
+        screenshotButton.setBounds(0, 518, 192, 40);
+        screenshotButton.setBackground(Color.GRAY);
+        screenshotButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MakeScreenshotCommand(renderer).exec();
+            }
+        });
+
         JButton clearB = new JButton("Очистить");
         clearB.setLocation(208,518);
         clearB.setSize(192, 40);
@@ -143,7 +155,7 @@ public class Main extends Canvas
             @Override
             public void actionPerformed(ActionEvent e) {
                 running = false;
-                renderer.clear();
+                new ClearCommand(renderer).exec();
             }
         });
 
@@ -176,15 +188,11 @@ public class Main extends Canvas
 
         f.add(startB);//adding button in JFrame
         f.add(clearB);
+        f.add(screenshotButton);
         f.setLayout(null);
         f.setVisible(true);
     }
-    /*
-    добавить запуск по нажатию кнопки
-    добавить выбор рисунка (Factory)
-    добавить возможноть выбирать начальную точку построения (будет отмечена белым)
 
-     */
     public static void main(String[] args) {
         Main main = new Main();
         ColorLoader.init("src/main/java/org/resk/patterns/rainbow.jpg");
