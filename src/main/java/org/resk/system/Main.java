@@ -10,7 +10,6 @@ import org.resk.units.Point;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.TextLayout;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -37,7 +36,10 @@ public class Main extends Canvas
         Lorenz(new LorenzPoint(renderer)),
         Rossel(new RosselPoint(renderer)),
         NAttractor(new NAttractorPoint(renderer)),
-        Polynomial(new PolynomialAttractorPoint(renderer, "LUFBBFISGJYS"));
+        Polynomial(new PolynomialAttractorPoint(renderer, "LUFBBFISGJYS")),
+        BurkleShawAttractorPoint(new BurkleShawAttractorPoint(renderer)),
+        DenTsucsAttractor(new DenTsucsAttractorPoint(renderer))
+        ;
         private PointType type;
         private Render rend;
         AttractorsEnum(PointType type) {
