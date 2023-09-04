@@ -1,16 +1,24 @@
-package org.resk.units;
+package org.resk.units.points;
 
-import org.resk.system.ColorLoader;
 import org.resk.system.Render;
+import org.resk.units.Properties;
 
-import java.util.ArrayList;
-
-public class RosselPoint extends CanDrawPointType implements EnableToGetDeltaPoint {
-    private double a = 0.2;
-    private double b = 0.2;
-    private double c = 14;
+public class RosselPoint extends BasePointType implements EnableToGetDeltaPoint {
+    private Double a = 0.2;
+    private Double b = 0.2;
+    private Double c = 14.0;
     public RosselPoint(Render render) {
         super(render, 20);
+        properties = new Properties<Double>()
+                .registerProperties("a", a)
+                .registerProperties("b", b)
+                .registerProperties("c", c);
+    }
+    @Override
+    protected void updateProperties() {
+        a = Double.parseDouble(properties.getByName("a").toString());
+        b = Double.parseDouble(properties.getByName("b").toString());
+        c = Double.parseDouble(properties.getByName("c").toString());
     }
 
     @Override

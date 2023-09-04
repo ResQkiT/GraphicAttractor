@@ -1,4 +1,4 @@
-package org.resk.units;
+package org.resk.units.points;
 
 public interface EnableToGetNextPoint {
     public double getNextX(double x, double y, double z);

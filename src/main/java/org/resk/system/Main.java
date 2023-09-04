@@ -4,8 +4,9 @@ package org.resk.system;
 import org.resk.system.commands.ClearCommand;
 import org.resk.system.commands.MakeScreenshotCommand;
 import org.resk.units.*;
-import org.resk.units.Point;
-
+import org.resk.units.points.Point;
+import org.resk.units.points.*;
+import org.resk.units.Properties;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +14,8 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.*;
 
-/**
- * Hello world!
- *
- */
 public class Main extends Canvas
 {
     private static final int WIDTH = 1920;
@@ -29,6 +27,7 @@ public class Main extends Canvas
     private Graphics g = null;
     public volatile static Render renderer;
     private JFrame frame = new JFrame(title);
+    private JFrame dialog ;
     private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     private int pixels[] = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
@@ -40,16 +39,16 @@ public class Main extends Canvas
         BurkleShawAttractorPoint(new BurkleShawAttractorPoint(renderer)),
         DenTsucsAttractor(new DenTsucsAttractorPoint(renderer))
         ;
-        private PointType type;
+        private BasePointType type;
         private Render rend;
-        AttractorsEnum(PointType type) {
+        AttractorsEnum(BasePointType type) {
             this.type = type;
         }
         public void setRend(Render rend) {
             this.rend = rend;
         }
 
-        public PointType getType() {
+        public BasePointType getType() {
             return type;
         }
     }
@@ -118,26 +117,86 @@ public class Main extends Canvas
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    ArrayList<Label> settingsLabels = new ArrayList<>();
+    ArrayList<TextField> settingsTextFields = new ArrayList<>();
+    private void generateSettingsBox(final Properties properties){
+        final HashMap map = properties.getList();
+
+        Set<String> keys = map.keySet();
+
+        String[] s = keys.toArray(new String[keys.size()]);
+
+        int deltaY = 0;
+
+        for (final String propName: s) {
+            final TextField tf = new TextField();
+            final Label l = new Label(propName);
+            l.setBounds(24, 145 + deltaY, 14, 34);
+            tf.setText(map.get(propName).toString());
+            tf.setBounds(54, 145 + deltaY, 50, 34);
+            tf.addTextListener(new TextListener() {
+                @Override
+                public void textValueChanged(TextEvent e) {
+                    if ("".equals(tf.getText()))
+                        return;
+                    System.out.println(tf.getText());
+                    BasePointType bpt = comboBoxType.getItemAt(comboBoxType.getSelectedIndex()).getType();
+                    properties.setByName(l.getText() ,tf.getText().toString());
+                    bpt.setProperties(properties);
+                }
+            });
+            settingsLabels.add(l);
+            settingsTextFields.add(tf);
+            dialog.add(l);
+            dialog.add(tf);
+            deltaY += 37;
+        }
+    }
+    private void deleteSettingsBox(){
+        for (Label l: settingsLabels
+             ) {
+            dialog.remove(l);
+        }
+        for (TextField tf: settingsTextFields
+             ) {
+            dialog.remove(tf);
+        }
+        settingsLabels.clear();
+        settingsTextFields.clear();
+        dialog.revalidate();
+    }
+    private JComboBox<AttractorsEnum> comboBoxType;
     private void initDialog(){
-        JFrame f=new JFrame();
-        f.setSize(400,640);
-        f.setResizable(true );
+        dialog = new JFrame();
+
+        dialog.setSize(400,640);
+        dialog.setResizable(true );
 
         Label simuText = new Label("Симуляция");
         simuText.setBounds(13, 47, 164, 27);
-        f.add(simuText);
+        dialog.add(simuText);
 
         Label gradText = new Label("Градиент");
         gradText.setBounds(13, 89, 164, 27);
-        f.add(gradText);
+        dialog.add(gradText);
 
-        final JComboBox<AttractorsEnum> comboBoxType = new JComboBox<>(AttractorsEnum.values());
+        comboBoxType = new JComboBox<>(AttractorsEnum.values());
         comboBoxType.setBounds(204,47, 183, 27);
-        f.add(comboBoxType);
+        comboBoxType.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AttractorsEnum en = comboBoxType.getItemAt(comboBoxType.getSelectedIndex());
+                BasePointType bpt = en.getType();
+                Properties prop = bpt.getProperties();
+                deleteSettingsBox();
+                generateSettingsBox(prop);
+            }
+        });
+        dialog.add(comboBoxType);
 
         final JComboBox<Patterns> comboBoxPattern = new JComboBox<>(  Patterns.values() );
         comboBoxPattern.setBounds(204,89, 183, 27);
-        f.add(comboBoxPattern);
+        dialog.add(comboBoxPattern);
 
         JButton screenshotButton = new JButton("Скриншот");
         screenshotButton.setBounds(0, 518, 192, 40);
@@ -187,14 +246,12 @@ public class Main extends Canvas
                 }).start();
             }
         });
-
-        f.add(startB);//adding button in JFrame
-        f.add(clearB);
-        f.add(screenshotButton);
-        f.setLayout(null);
-        f.setVisible(true);
+        dialog.add(startB);//adding button in JFrame
+        dialog.add(clearB);
+        dialog.add(screenshotButton);
+        dialog.setLayout(null);
+        dialog.setVisible(true);
     }
-
     public static void main(String[] args) {
         Main main = new Main();
         ColorLoader.init("src/main/java/org/resk/patterns/rainbow.jpg");

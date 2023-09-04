@@ -1,12 +1,12 @@
-package org.resk.units;
+package org.resk.units.points;
 
 
-import org.resk.system.ColorLoader;
 import org.resk.system.Render;
+import org.resk.units.Properties;
 
-import java.util.ArrayList;
-
+import static java.lang.Math.cos;
 import static java.lang.Math.sqrt;
+
 /*
 GLXOESFTTPSV
 MCRBIPOPHTBN
@@ -16,13 +16,22 @@ QFFVSLMJJCCR
 LUFBBFISGJYS
 RALLTIOBDULT
  */
-public class PolynomialAttractorPoint extends CanDrawPointType implements EnableToGetNextPoint {
+public class PolynomialAttractorPoint extends BasePointType implements EnableToGetNextPoint {
     private String pattern;
     private double[] odds = new double[12];
-
     public PolynomialAttractorPoint(Render render, String pattern) {
         super(render, 500);
         this.pattern = pattern;
+        initOdds(pattern);
+        properties = new Properties<String>()
+                .registerProperties("pattern", pattern);
+        updateProperties();
+    }
+    @Override
+    protected void updateProperties() {
+        pattern = (String) properties.getByName("pattern");
+        if(pattern.length() != 12)
+            return;
         initOdds(pattern);
     }
     private void initOdds(String pattern){

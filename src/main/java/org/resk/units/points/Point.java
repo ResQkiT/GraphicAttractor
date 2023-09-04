@@ -1,4 +1,4 @@
-package org.resk.units;
+package org.resk.units.points;
 
 public class Point {
     private double x;

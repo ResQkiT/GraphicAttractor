@@ -1,27 +1,39 @@
-package org.resk.units;
+package org.resk.units.points;
 
 import org.resk.system.ColorLoader;
 import org.resk.system.Render;
+import org.resk.units.Properties;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class CanDrawPointType implements PointType{
+public abstract class BasePointType<T> implements PointType{
     private Render render;
     private ArrayList<ArrayList<Integer>> startedPoints = new ArrayList<>();
     private int centerX;
     private int centerY;
     private int centerZ;
     private final int vectorX = 1920 / 2;
-    private final int vectorY = (int) (1080 / 2.5);
+    private final int vectorY = (int) (1080 / 2);
     private final int vectorZ = 1920 / 2;
     private int dx = 0;
     private int dy = 0;
     private int dz = 0;
     private double scope = 20;
-    public CanDrawPointType(Render render, int scope) {
+    protected Properties<T> properties;
+    public BasePointType(Render render, int scope) {
         this.scope = scope;
         this.render = render;
     }
+    public Properties<T> getProperties() {
+        return properties;
+    }
+
+    public  void setProperties(Properties<T> properties) {
+        this.properties = properties;
+        updateProperties();
+    }
+    protected abstract void updateProperties();
 
     @Override
     public Point getNext(double x, double y, double z, double deltaTime) {
