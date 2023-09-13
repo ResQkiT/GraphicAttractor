@@ -2,9 +2,10 @@ package org.resk.units;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Properties<T>{
-    private HashMap<String,T> data = new HashMap<>();
+    private LinkedHashMap<String,T> data = new LinkedHashMap<>();
     public Properties<T> registerProperties(String name, T value){
         data.put(name, value);
         return this;

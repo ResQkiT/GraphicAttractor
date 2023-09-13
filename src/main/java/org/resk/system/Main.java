@@ -1,6 +1,5 @@
 package org.resk.system;
 
-
 import org.resk.system.commands.ClearCommand;
 import org.resk.system.commands.MakeScreenshotCommand;
 import org.resk.units.*;
@@ -37,8 +36,7 @@ public class Main extends Canvas
         NAttractor(new NAttractorPoint(renderer)),
         Polynomial(new PolynomialAttractorPoint(renderer, "LUFBBFISGJYS")),
         BurkleShawAttractorPoint(new BurkleShawAttractorPoint(renderer)),
-        DenTsucsAttractor(new DenTsucsAttractorPoint(renderer))
-        ;
+        DenTsucsAttractor(new DenTsucsAttractorPoint(renderer));
         private BasePointType type;
         private Render rend;
         AttractorsEnum(BasePointType type) {
@@ -121,19 +119,15 @@ public class Main extends Canvas
     ArrayList<TextField> settingsTextFields = new ArrayList<>();
     private void generateSettingsBox(final Properties properties){
         final HashMap map = properties.getList();
-
         Set<String> keys = map.keySet();
-
         String[] s = keys.toArray(new String[keys.size()]);
-
         int deltaY = 0;
-
         for (final String propName: s) {
             final TextField tf = new TextField();
             final Label l = new Label(propName);
-            l.setBounds(24, 145 + deltaY, 14, 34);
+            l.setBounds(24, 145 + deltaY, 50, 34);
             tf.setText(map.get(propName).toString());
-            tf.setBounds(54, 145 + deltaY, 50, 34);
+            tf.setBounds(54 + 50, 145 + deltaY, 100, 34);
             tf.addTextListener(new TextListener() {
                 @Override
                 public void textValueChanged(TextEvent e) {
@@ -255,7 +249,6 @@ public class Main extends Canvas
     public static void main(String[] args) {
         Main main = new Main();
         ColorLoader.init("src/main/java/org/resk/patterns/rainbow.jpg");
-
     }
 
 }

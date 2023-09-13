@@ -4,21 +4,24 @@ import org.resk.system.Render;
 import org.resk.units.Properties;
 
 public class RosselPoint extends BasePointType implements EnableToGetDeltaPoint {
-    private Double a = 0.2;
-    private Double b = 0.2;
-    private Double c = 14.0;
+    private Double a;
+    private Double b;
+    private Double c;
     public RosselPoint(Render render) {
-        super(render, 20);
+        super(render);
         properties = new Properties<Double>()
-                .registerProperties("a", a)
-                .registerProperties("b", b)
-                .registerProperties("c", c);
+                .registerProperties("a", 0.2)
+                .registerProperties("b", 0.2)
+                .registerProperties("c", 14.0)
+                .registerProperties("scope", 20.0);
+        updateProperties();
     }
     @Override
     protected void updateProperties() {
         a = Double.parseDouble(properties.getByName("a").toString());
         b = Double.parseDouble(properties.getByName("b").toString());
         c = Double.parseDouble(properties.getByName("c").toString());
+        scope = Double.parseDouble(properties.getByName("scope").toString());
     }
 
     @Override

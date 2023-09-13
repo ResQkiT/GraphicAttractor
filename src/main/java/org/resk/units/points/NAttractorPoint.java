@@ -11,12 +11,13 @@ public class NAttractorPoint extends BasePointType implements EnableToGetNextPoi
     private Double c2;
     private Double c3;
     public NAttractorPoint(Render render) {
-        super(render, 125);
+        super(render);
         properties = new Properties<Double>()
                 .registerProperties("c0" ,1.6831349342542232 )
                 .registerProperties("c1" ,-2.9984035545418575 )
                 .registerProperties("c2" ,2.1207267208634164)
-                .registerProperties("c3" ,-2.121518002564899 );
+                .registerProperties("c3" ,-2.121518002564899 )
+                .registerProperties("scope", 125.0);
         updateProperties();
     }
     @Override
@@ -25,6 +26,7 @@ public class NAttractorPoint extends BasePointType implements EnableToGetNextPoi
         c1 = Double.parseDouble(properties.getByName("c1").toString());
         c2 = Double.parseDouble(properties.getByName("c2").toString());
         c3 = Double.parseDouble(properties.getByName("c3").toString());
+        scope = Double.parseDouble(properties.getByName("scope").toString());
     }
     @Override
     public double getNextX(double x, double y, double z) {

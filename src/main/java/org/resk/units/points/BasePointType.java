@@ -19,10 +19,9 @@ public abstract class BasePointType<T> implements PointType{
     private int dx = 0;
     private int dy = 0;
     private int dz = 0;
-    private double scope = 20;
+    protected Double scope;
     protected Properties<T> properties;
-    public BasePointType(Render render, int scope) {
-        this.scope = scope;
+    public BasePointType(Render render) {
         this.render = render;
     }
     public Properties<T> getProperties() {

@@ -7,16 +7,18 @@ public class BurkleShawAttractorPoint extends BasePointType implements EnableToG
     private Double s;
     private Double v;
     public BurkleShawAttractorPoint(Render render) {
-        super(render, 200);
+        super(render);
         properties = new Properties<Double>()
                 .registerProperties("s", 10.0)
-                .registerProperties("v", 4.272);
+                .registerProperties("v", 4.272)
+                .registerProperties("scope", 200.0);
         updateProperties();
     }
     @Override
     protected void updateProperties() {
         s = Double.parseDouble(properties.getByName("s").toString());
         v = Double.parseDouble(properties.getByName("v").toString());
+        scope = Double.parseDouble(properties.getByName("scope").toString());
     }
     @Override
     public double getDeltaX(double x, double y, double z) {

@@ -12,11 +12,12 @@ public class LorenzPoint extends BasePointType implements PointType, EnableToGet
     private Double s;
     private Double r;
     public LorenzPoint(Render render) {
-        super(render , 20);
+        super(render);
         properties = new Properties<Double>()
                 .registerProperties("b", 8.0/3.0)
                 .registerProperties("s", 10.0)
-                .registerProperties("r", 28.0);
+                .registerProperties("r", 28.0)
+                .registerProperties("scope", 20.0);
         updateProperties();
     }
     @Override
@@ -24,6 +25,7 @@ public class LorenzPoint extends BasePointType implements PointType, EnableToGet
         b = Double.parseDouble(properties.getByName("b").toString());
         s = Double.parseDouble(properties.getByName("s").toString());
         r = Double.parseDouble(properties.getByName("r").toString());
+        scope = Double.parseDouble(properties.getByName("scope").toString());
     }
 
     public double getDeltaX(double x, double y, double z) {

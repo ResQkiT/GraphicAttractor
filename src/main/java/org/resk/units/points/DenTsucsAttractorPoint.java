@@ -11,13 +11,14 @@ public class DenTsucsAttractorPoint extends BasePointType implements EnableToGet
     private double f ;
 
     public DenTsucsAttractorPoint(Render render) {
-        super(render, 20);
+        super(render);
         properties = new Properties<Double>()
                 .registerProperties("a" , 40.0)
                 .registerProperties("c", 0.833)
                 .registerProperties("d", 0.5)
                 .registerProperties("e", 0.65)
-                .registerProperties("f", 20.0);
+                .registerProperties("f", 20.0)
+                .registerProperties("scope", 20.0);
         updateProperties();
     }
 
@@ -28,6 +29,7 @@ public class DenTsucsAttractorPoint extends BasePointType implements EnableToGet
         d = Double.parseDouble(properties.getByName("d").toString());
         e = Double.parseDouble(properties.getByName("e").toString());
         f = Double.parseDouble(properties.getByName("f").toString());
+        scope = Double.parseDouble(properties.getByName("scope").toString());
     }
     @Override
     public double getDeltaX(double x, double y, double z) {

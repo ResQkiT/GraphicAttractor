@@ -20,16 +20,18 @@ public class PolynomialAttractorPoint extends BasePointType implements EnableToG
     private String pattern;
     private double[] odds = new double[12];
     public PolynomialAttractorPoint(Render render, String pattern) {
-        super(render, 500);
+        super(render);
         this.pattern = pattern;
         initOdds(pattern);
         properties = new Properties<String>()
-                .registerProperties("pattern", pattern);
+                .registerProperties("pattern", pattern)
+                .registerProperties("scope", Double.toString(500.0));
         updateProperties();
     }
     @Override
     protected void updateProperties() {
         pattern = (String) properties.getByName("pattern");
+        scope = Double.parseDouble(properties.getByName("scope").toString());scope = Double.parseDouble(properties.getByName("scope").toString());
         if(pattern.length() != 12)
             return;
         initOdds(pattern);
