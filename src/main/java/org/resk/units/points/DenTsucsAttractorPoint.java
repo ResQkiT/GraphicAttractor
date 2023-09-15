@@ -1,7 +1,8 @@
 package org.resk.units.points;
 
 import org.resk.system.Render;
-import org.resk.units.Properties;
+import org.resk.system.properties.Properties;
+import org.resk.system.properties.Property;
 
 public class DenTsucsAttractorPoint extends BasePointType implements EnableToGetDeltaPoint {
     private double a;
@@ -12,24 +13,24 @@ public class DenTsucsAttractorPoint extends BasePointType implements EnableToGet
 
     public DenTsucsAttractorPoint(Render render) {
         super(render);
-        properties = new Properties<Double>()
-                .registerProperties("a" , 40.0)
-                .registerProperties("c", 0.833)
-                .registerProperties("d", 0.5)
-                .registerProperties("e", 0.65)
-                .registerProperties("f", 20.0)
-                .registerProperties("scope", 20.0);
+        properties = new Properties()
+                .registerProperties(new Property<Double>("a" , 40.0))
+                .registerProperties(new Property<Double>("c", 0.833))
+                .registerProperties(new Property<Double>("d", 0.5))
+                .registerProperties(new Property<Double>("e", 0.65))
+                .registerProperties(new Property<Double>("f", 20.0))
+                .registerProperties(new Property<Double>("scope", 20.0));
         updateProperties();
     }
 
     @Override
     protected void updateProperties() {
-        a = Double.parseDouble(properties.getByName("a").toString());
-        c = Double.parseDouble(properties.getByName("c").toString());
-        d = Double.parseDouble(properties.getByName("d").toString());
-        e = Double.parseDouble(properties.getByName("e").toString());
-        f = Double.parseDouble(properties.getByName("f").toString());
-        scope = Double.parseDouble(properties.getByName("scope").toString());
+        a = (Double) properties.getByName("a").getValue();
+        c = (Double) properties.getByName("c").getValue();
+        d = (Double) properties.getByName("d").getValue();
+        e = (Double) properties.getByName("e").getValue();
+        f = (Double) properties.getByName("f").getValue();
+        scope = (Double) properties.getByName("scope").getValue();
     }
     @Override
     public double getDeltaX(double x, double y, double z) {

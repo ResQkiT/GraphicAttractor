@@ -1,9 +1,8 @@
 package org.resk.units.points;
 
 import org.resk.system.Render;
-import org.resk.units.Properties;
-
-import java.util.HashMap;
+import org.resk.system.properties.Properties;
+import org.resk.system.properties.Property;
 
 
 public class LorenzPoint extends BasePointType implements PointType, EnableToGetDeltaPoint {
@@ -13,19 +12,19 @@ public class LorenzPoint extends BasePointType implements PointType, EnableToGet
     private Double r;
     public LorenzPoint(Render render) {
         super(render);
-        properties = new Properties<Double>()
-                .registerProperties("b", 8.0/3.0)
-                .registerProperties("s", 10.0)
-                .registerProperties("r", 28.0)
-                .registerProperties("scope", 20.0);
+        properties = new Properties()
+                .registerProperties(new Property<Double>("b", 8.0/3.0))
+                .registerProperties(new Property<Double>("s", 10.0))
+                .registerProperties(new Property<Double>("r", 28.0))
+                .registerProperties(new Property<Double>("scope", 20.0));
         updateProperties();
     }
     @Override
     protected void updateProperties(){
-        b = Double.parseDouble(properties.getByName("b").toString());
-        s = Double.parseDouble(properties.getByName("s").toString());
-        r = Double.parseDouble(properties.getByName("r").toString());
-        scope = Double.parseDouble(properties.getByName("scope").toString());
+        b = (Double) properties.getByName("b").getValue();
+        s = (Double) properties.getByName("s").getValue();
+        r = (Double) properties.getByName("r").getValue();
+        scope = (Double) properties.getByName("scope").getValue();
     }
 
     public double getDeltaX(double x, double y, double z) {

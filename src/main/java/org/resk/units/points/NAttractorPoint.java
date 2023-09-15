@@ -1,7 +1,8 @@
 package org.resk.units.points;
 
 import org.resk.system.Render;
-import org.resk.units.Properties;
+import org.resk.system.properties.Properties;
+import org.resk.system.properties.Property;
 
 import static java.lang.Math.*;
 
@@ -12,21 +13,21 @@ public class NAttractorPoint extends BasePointType implements EnableToGetNextPoi
     private Double c3;
     public NAttractorPoint(Render render) {
         super(render);
-        properties = new Properties<Double>()
-                .registerProperties("c0" ,1.6831349342542232 )
-                .registerProperties("c1" ,-2.9984035545418575 )
-                .registerProperties("c2" ,2.1207267208634164)
-                .registerProperties("c3" ,-2.121518002564899 )
-                .registerProperties("scope", 125.0);
+        properties = new Properties()
+                .registerProperties(new Property<Double>("c0" ,1.6831349342542232 ))
+                .registerProperties(new Property<Double>("c1" ,-2.9984035545418575 ))
+                .registerProperties(new Property<Double>("c2" ,2.1207267208634164))
+                .registerProperties(new Property<Double>("c3" ,-2.121518002564899 ))
+                .registerProperties(new Property<Double>("scope", 125.0));
         updateProperties();
     }
     @Override
     protected void updateProperties() {
-        c0 = Double.parseDouble(properties.getByName("c0").toString());
-        c1 = Double.parseDouble(properties.getByName("c1").toString());
-        c2 = Double.parseDouble(properties.getByName("c2").toString());
-        c3 = Double.parseDouble(properties.getByName("c3").toString());
-        scope = Double.parseDouble(properties.getByName("scope").toString());
+        c0 = (Double) properties.getByName("c0").getValue();
+        c1 = (Double) properties.getByName("c1").getValue();
+        c2 = (Double) properties.getByName("c2").getValue();
+        c3 = (Double) properties.getByName("c3").getValue();
+        scope = (Double) properties.getByName("scope").getValue();
     }
     @Override
     public double getNextX(double x, double y, double z) {

@@ -2,9 +2,9 @@ package org.resk.units.points;
 
 
 import org.resk.system.Render;
-import org.resk.units.Properties;
+import org.resk.system.properties.Properties;
+import org.resk.system.properties.Property;
 
-import static java.lang.Math.cos;
 import static java.lang.Math.sqrt;
 
 /*
@@ -23,15 +23,15 @@ public class PolynomialAttractorPoint extends BasePointType implements EnableToG
         super(render);
         this.pattern = pattern;
         initOdds(pattern);
-        properties = new Properties<String>()
-                .registerProperties("pattern", pattern)
-                .registerProperties("scope", Double.toString(500.0));
+        properties = new Properties()
+                .registerProperties(new Property<String>("pattern", pattern))
+                .registerProperties(new Property<Double>("scope", 500.0));
         updateProperties();
     }
     @Override
     protected void updateProperties() {
-        pattern = (String) properties.getByName("pattern");
-        scope = Double.parseDouble(properties.getByName("scope").toString());scope = Double.parseDouble(properties.getByName("scope").toString());
+        pattern = (String) properties.getByName("pattern").getValue();
+        scope = (Double) properties.getByName("scope").getValue();
         if(pattern.length() != 12)
             return;
         initOdds(pattern);

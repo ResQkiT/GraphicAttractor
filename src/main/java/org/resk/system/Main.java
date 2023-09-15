@@ -1,11 +1,14 @@
 package org.resk.system;
 
+import org.resk.system.adapters.service.ScreenshotsAdapter;
+import org.resk.system.colorsystem.ColorLoader;
+import org.resk.system.colorsystem.Patterns;
 import org.resk.system.commands.ClearCommand;
 import org.resk.system.commands.MakeScreenshotCommand;
-import org.resk.units.*;
+import org.resk.system.properties.Properties;
+import org.resk.system.properties.Property;
 import org.resk.units.points.Point;
 import org.resk.units.points.*;
-import org.resk.units.Properties;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,7 +39,8 @@ public class Main extends Canvas
         NAttractor(new NAttractorPoint(renderer)),
         Polynomial(new PolynomialAttractorPoint(renderer, "LUFBBFISGJYS")),
         BurkleShawAttractorPoint(new BurkleShawAttractorPoint(renderer)),
-        DenTsucsAttractor(new DenTsucsAttractorPoint(renderer));
+        DenTsucsAttractor(new DenTsucsAttractorPoint(renderer)),
+        RRAttractorPoint(new RRAttractorPoint(renderer));
         private BasePointType type;
         private Render rend;
         AttractorsEnum(BasePointType type) {
@@ -117,16 +121,19 @@ public class Main extends Canvas
     }
     ArrayList<Label> settingsLabels = new ArrayList<>();
     ArrayList<TextField> settingsTextFields = new ArrayList<>();
-    private void generateSettingsBox(final Properties properties){
+    private void generateSettingsBox(final org.resk.system.properties.Properties properties){
         final HashMap map = properties.getList();
         Set<String> keys = map.keySet();
         String[] s = keys.toArray(new String[keys.size()]);
         int deltaY = 0;
         for (final String propName: s) {
+            final Property property = properties.getByName(propName);
+
             final TextField tf = new TextField();
             final Label l = new Label(propName);
+
             l.setBounds(24, 145 + deltaY, 50, 34);
-            tf.setText(map.get(propName).toString());
+            tf.setText( ( (Property) map.get(propName) ).getValue().toString()  );
             tf.setBounds(54 + 50, 145 + deltaY, 100, 34);
             tf.addTextListener(new TextListener() {
                 @Override
@@ -135,7 +142,9 @@ public class Main extends Canvas
                         return;
                     System.out.println(tf.getText());
                     BasePointType bpt = comboBoxType.getItemAt(comboBoxType.getSelectedIndex()).getType();
-                    properties.setByName(l.getText() ,tf.getText().toString());
+
+                    property.setValue(tf.getText().toString());
+                    properties.setByName(l.getText() , property);
                     bpt.setProperties(properties);
                 }
             });

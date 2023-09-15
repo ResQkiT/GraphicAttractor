@@ -1,13 +1,12 @@
 package org.resk.units.points;
 
-import org.resk.system.ColorLoader;
+import org.resk.system.colorsystem.ColorLoader;
 import org.resk.system.Render;
-import org.resk.units.Properties;
+import org.resk.system.properties.Properties;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public abstract class BasePointType<T> implements PointType{
+public abstract class BasePointType implements PointType{
     private Render render;
     private ArrayList<ArrayList<Integer>> startedPoints = new ArrayList<>();
     private int centerX;
@@ -20,15 +19,15 @@ public abstract class BasePointType<T> implements PointType{
     private int dy = 0;
     private int dz = 0;
     protected Double scope;
-    protected Properties<T> properties;
+    protected Properties properties;
     public BasePointType(Render render) {
         this.render = render;
     }
-    public Properties<T> getProperties() {
+    public Properties getProperties() {
         return properties;
     }
 
-    public  void setProperties(Properties<T> properties) {
+    public  void setProperties(Properties properties) {
         this.properties = properties;
         updateProperties();
     }

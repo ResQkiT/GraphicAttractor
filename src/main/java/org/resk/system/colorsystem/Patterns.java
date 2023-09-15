@@ -1,4 +1,4 @@
-package org.resk.units;
+package org.resk.system.colorsystem;
 
 public enum Patterns {
     RAINBOW("Rainbow", "src/main/java/org/resk/patterns/rainbow.jpg"),

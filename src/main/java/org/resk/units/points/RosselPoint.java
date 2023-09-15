@@ -1,7 +1,8 @@
 package org.resk.units.points;
 
 import org.resk.system.Render;
-import org.resk.units.Properties;
+import org.resk.system.properties.Properties;
+import org.resk.system.properties.Property;
 
 public class RosselPoint extends BasePointType implements EnableToGetDeltaPoint {
     private Double a;
@@ -9,19 +10,19 @@ public class RosselPoint extends BasePointType implements EnableToGetDeltaPoint 
     private Double c;
     public RosselPoint(Render render) {
         super(render);
-        properties = new Properties<Double>()
-                .registerProperties("a", 0.2)
-                .registerProperties("b", 0.2)
-                .registerProperties("c", 14.0)
-                .registerProperties("scope", 20.0);
+        properties = new Properties()
+                .registerProperties(new Property<Double>("a", 0.2))
+                .registerProperties(new Property<Double>("b", 0.2))
+                .registerProperties(new Property<Double>("c", 14.0))
+                .registerProperties(new Property<Double>("scope", 20.0));
         updateProperties();
     }
     @Override
     protected void updateProperties() {
-        a = Double.parseDouble(properties.getByName("a").toString());
-        b = Double.parseDouble(properties.getByName("b").toString());
-        c = Double.parseDouble(properties.getByName("c").toString());
-        scope = Double.parseDouble(properties.getByName("scope").toString());
+        a = (Double) properties.getByName("a").getValue();
+        b = (Double) properties.getByName("b").getValue();
+        c = (Double) properties.getByName("c").getValue();
+        scope = (Double) properties.getByName("scope").getValue();
     }
 
     @Override

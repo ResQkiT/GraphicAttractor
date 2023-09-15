@@ -1,5 +1,6 @@
-package org.resk.system;
+package org.resk.system.adapters.service;
 
+import org.resk.system.Render;
 import org.resk.system.commands.MakeScreenshotCommand;
 
 import java.awt.event.MouseAdapter;
