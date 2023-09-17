@@ -5,26 +5,28 @@ import org.resk.system.adapters.valuetransform.DoubleAdaper;
 import org.resk.system.adapters.valuetransform.StringAdapter;
 
 public class Property<T> {
-    private String name;
+    private final String name;
     private T value;
     private BaseAdapter adapter;
+
     public String getName() {
         return name;
     }
+
     public T getValue() {
         return value;
     }
 
     public void setValue(Object value) {
-        this.value = (T)adapter.getApaptedValue(value);
+        this.value = (T) adapter.getApaptedValue(value);
     }
 
     public Property(String name, T value) {
         this.name = name;
         this.value = value;
-        if(value instanceof String){
+        if (value instanceof String) {
             adapter = new StringAdapter();
-        }else if(value instanceof Double){
+        } else if (value instanceof Double) {
             adapter = new DoubleAdaper();
         }
     }

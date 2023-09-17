@@ -6,8 +6,9 @@ import org.resk.system.properties.Property;
 
 import java.util.Random;
 
-public class RRAttractorPoint extends BasePointType implements EnableToGetNextPoint{
+public class RRAttractorPoint extends BasePointType implements EnableToGetNextPoint {
     Random random = new Random();
+
     public RRAttractorPoint(Render render) {
         super(render);
         super.properties = new Properties()
@@ -34,6 +35,7 @@ public class RRAttractorPoint extends BasePointType implements EnableToGetNextPo
     public double getNextZ(double x, double y, double z) {
         return random.nextInt(1920);
     }
+
     @Override
     public Point getNext(double x, double y, double z, double deltaTime) {
         return new Point(getNextX(x, y, z),

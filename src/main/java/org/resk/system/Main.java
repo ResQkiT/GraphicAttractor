@@ -12,26 +12,30 @@ import org.resk.units.points.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
-public class Main extends Canvas
-{
+public class Main extends Canvas {
     private static final int WIDTH = 1920;
     private static final int HEIGHT = WIDTH / 16 * 9;
     private static final int SCALE = 1;
-    private String title = "Game";
+    private final String title = "Game";
     private volatile boolean running = false;
     private BufferStrategy bs = null;
     private Graphics g = null;
     public volatile static Render renderer;
-    private JFrame frame = new JFrame(title);
-    private JFrame dialog ;
-    private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-    private int pixels[] = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+    private final JFrame frame = new JFrame(title);
+    private JFrame dialog;
+    private final BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+    private final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
     public enum AttractorsEnum {
         Lorenz(new LorenzPoint(renderer)),
@@ -41,11 +45,13 @@ public class Main extends Canvas
         BurkleShawAttractorPoint(new BurkleShawAttractorPoint(renderer)),
         DenTsucsAttractor(new DenTsucsAttractorPoint(renderer)),
         RRAttractorPoint(new RRAttractorPoint(renderer));
-        private BasePointType type;
+        private final BasePointType type;
         private Render rend;
+
         AttractorsEnum(BasePointType type) {
             this.type = type;
         }
+
         public void setRend(Render rend) {
             this.rend = rend;
         }
@@ -54,6 +60,7 @@ public class Main extends Canvas
             return type;
         }
     }
+
     public Main() {
         setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         renderer = new Render(WIDTH, HEIGHT, pixels);
@@ -62,7 +69,7 @@ public class Main extends Canvas
         start();
     }
 
-    private void start(){
+    private void start() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -72,20 +79,20 @@ public class Main extends Canvas
                 double delta = 0;
                 int updates = 0;
                 int frames = 0;
-                while (true){
+                while (true) {
                     long jvmNow = System.nanoTime();
                     delta += (jvmNow - jvmLastTime);
                     jvmLastTime = jvmNow;
-                    if(delta >= jvmPartTime) {
+                    if (delta >= jvmPartTime) {
                         update();
                         updates += 1;
                         delta = 0;
                     }
                     render();
                     frames += 1;
-                    if(System.currentTimeMillis() - timer > 1000){
+                    if (System.currentTimeMillis() - timer > 1000) {
                         timer += 1000;
-                        frame.setTitle(title + " | " + "Updates: "+ updates + " Frames: " + frames);
+                        frame.setTitle(title + " | " + "Updates: " + updates + " Frames: " + frames);
                         updates = 0;
                         frames = 0;
                     }
@@ -93,22 +100,26 @@ public class Main extends Canvas
             }
         }).start();
     }
-    private void update(){}
-    private void render(){
-        if(bs == null){
+
+    private void update() {
+    }
+
+    private void render() {
+        if (bs == null) {
             createBufferStrategy(3);
             bs = getBufferStrategy();
         }
         renderer.render();
         g = bs.getDrawGraphics();
-        g.drawImage(image, 0,0, getWidth(), getHeight(), null);
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.dispose();
         bufferSwap();
     }
 
-    private void bufferSwap(){
+    private void bufferSwap() {
         bs.show();
     }
+
     private void init() {
         frame.setResizable(false);
         frame.add(this);
@@ -119,21 +130,23 @@ public class Main extends Canvas
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+
     ArrayList<Label> settingsLabels = new ArrayList<>();
     ArrayList<TextField> settingsTextFields = new ArrayList<>();
-    private void generateSettingsBox(final org.resk.system.properties.Properties properties){
+
+    private void generateSettingsBox(final org.resk.system.properties.Properties properties) {
         final HashMap map = properties.getList();
         Set<String> keys = map.keySet();
         String[] s = keys.toArray(new String[keys.size()]);
         int deltaY = 0;
-        for (final String propName: s) {
+        for (final String propName : s) {
             final Property property = properties.getByName(propName);
 
             final TextField tf = new TextField();
             final Label l = new Label(propName);
 
             l.setBounds(24, 145 + deltaY, 50, 34);
-            tf.setText( ( (Property) map.get(propName) ).getValue().toString()  );
+            tf.setText(((Property) map.get(propName)).getValue().toString());
             tf.setBounds(54 + 50, 145 + deltaY, 100, 34);
             tf.addTextListener(new TextListener() {
                 @Override
@@ -143,8 +156,8 @@ public class Main extends Canvas
                     System.out.println(tf.getText());
                     BasePointType bpt = comboBoxType.getItemAt(comboBoxType.getSelectedIndex()).getType();
 
-                    property.setValue(tf.getText().toString());
-                    properties.setByName(l.getText() , property);
+                    property.setValue(tf.getText());
+                    properties.setByName(l.getText(), property);
                     bpt.setProperties(properties);
                 }
             });
@@ -155,25 +168,28 @@ public class Main extends Canvas
             deltaY += 37;
         }
     }
-    private void deleteSettingsBox(){
-        for (Label l: settingsLabels
-             ) {
+
+    private void deleteSettingsBox() {
+        for (Label l : settingsLabels
+        ) {
             dialog.remove(l);
         }
-        for (TextField tf: settingsTextFields
-             ) {
+        for (TextField tf : settingsTextFields
+        ) {
             dialog.remove(tf);
         }
         settingsLabels.clear();
         settingsTextFields.clear();
         dialog.revalidate();
     }
+
     private JComboBox<AttractorsEnum> comboBoxType;
-    private void initDialog(){
+
+    private void initDialog() {
         dialog = new JFrame();
 
-        dialog.setSize(400,640);
-        dialog.setResizable(true );
+        dialog.setSize(400, 640);
+        dialog.setResizable(true);
 
         Label simuText = new Label("Симуляция");
         simuText.setBounds(13, 47, 164, 27);
@@ -184,7 +200,7 @@ public class Main extends Canvas
         dialog.add(gradText);
 
         comboBoxType = new JComboBox<>(AttractorsEnum.values());
-        comboBoxType.setBounds(204,47, 183, 27);
+        comboBoxType.setBounds(204, 47, 183, 27);
         comboBoxType.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -197,8 +213,8 @@ public class Main extends Canvas
         });
         dialog.add(comboBoxType);
 
-        final JComboBox<Patterns> comboBoxPattern = new JComboBox<>(  Patterns.values() );
-        comboBoxPattern.setBounds(204,89, 183, 27);
+        final JComboBox<Patterns> comboBoxPattern = new JComboBox<>(Patterns.values());
+        comboBoxPattern.setBounds(204, 89, 183, 27);
         dialog.add(comboBoxPattern);
 
         JButton screenshotButton = new JButton("Скриншот");
@@ -212,7 +228,7 @@ public class Main extends Canvas
         });
 
         JButton clearB = new JButton("Очистить");
-        clearB.setLocation(208,518);
+        clearB.setLocation(208, 518);
         clearB.setSize(192, 40);
         clearB.setBackground(Color.RED);
         clearB.addActionListener(new ActionListener() {
@@ -223,8 +239,8 @@ public class Main extends Canvas
             }
         });
 
-        JButton startB=new JButton("Запуск");
-        startB.setLocation(0,560);
+        JButton startB = new JButton("Запуск");
+        startB.setLocation(0, 560);
         startB.setSize(400, 40);
         startB.setBackground(Color.GRAY);
         startB.addActionListener(new ActionListener() {
@@ -238,10 +254,8 @@ public class Main extends Canvas
                     @Override
                     public void run() {
                         Point start_point = new Point(1, 0, 0, pt);
-                        while (running){
-
+                        while (running) {
                             Point new_point = start_point.getNext(0.0001);
-                            //System.out.println(new_point);
                             new_point.draw();
                             start_point = new_point;
                         }
@@ -249,12 +263,13 @@ public class Main extends Canvas
                 }).start();
             }
         });
-        dialog.add(startB);//adding button in JFrame
+        dialog.add(startB);
         dialog.add(clearB);
         dialog.add(screenshotButton);
         dialog.setLayout(null);
         dialog.setVisible(true);
     }
+
     public static void main(String[] args) {
         Main main = new Main();
         ColorLoader.init("src/main/java/org/resk/patterns/rainbow.jpg");

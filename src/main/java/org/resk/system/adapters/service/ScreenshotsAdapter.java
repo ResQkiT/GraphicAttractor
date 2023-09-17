@@ -5,10 +5,10 @@ import org.resk.system.commands.MakeScreenshotCommand;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class ScreenshotsAdapter extends MouseAdapter {
-    private Render render;
+    private final Render render;
+
     public ScreenshotsAdapter(Render render) {
         this.render = render;
     }

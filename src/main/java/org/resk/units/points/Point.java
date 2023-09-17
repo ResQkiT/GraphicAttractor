@@ -1,20 +1,23 @@
 package org.resk.units.points;
 
 public class Point {
-    private double x;
-    private double y;
-    private double z;
-    private PointType lightweight;
+    private final double x;
+    private final double y;
+    private final double z;
+    private final PointType lightweight;
+
     public Point(double x, double y, double z, PointType lightweight) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.lightweight = lightweight;
     }
-    public Point getNext(double deltaTime){
+
+    public Point getNext(double deltaTime) {
         return this.lightweight.getNext(x, y, z, deltaTime);
     }
-    public void draw(){
+
+    public void draw() {
         this.lightweight.draw(x, y, z);
     }
 

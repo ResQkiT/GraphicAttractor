@@ -8,6 +8,7 @@ public class RosselPoint extends BasePointType implements EnableToGetDeltaPoint 
     private Double a;
     private Double b;
     private Double c;
+
     public RosselPoint(Render render) {
         super(render);
         properties = new Properties()
@@ -17,6 +18,7 @@ public class RosselPoint extends BasePointType implements EnableToGetDeltaPoint 
                 .registerProperties(new Property<Double>("scope", 20.0));
         updateProperties();
     }
+
     @Override
     protected void updateProperties() {
         a = (Double) properties.getByName("a").getValue();

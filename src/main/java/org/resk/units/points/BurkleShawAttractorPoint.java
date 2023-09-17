@@ -7,6 +7,7 @@ import org.resk.system.properties.Property;
 public class BurkleShawAttractorPoint extends BasePointType implements EnableToGetDeltaPoint {
     private Double s;
     private Double v;
+
     public BurkleShawAttractorPoint(Render render) {
         super(render);
         properties = new Properties()
@@ -15,6 +16,7 @@ public class BurkleShawAttractorPoint extends BasePointType implements EnableToG
                 .registerProperties(new Property<Double>("scope", 200.0));
         updateProperties();
     }
+
     @Override
     protected void updateProperties() {
         s = (Double) properties.getByName("s").getValue();
@@ -22,10 +24,12 @@ public class BurkleShawAttractorPoint extends BasePointType implements EnableToG
         scope = (Double) properties.getByName("scope").getValue();
 
     }
+
     @Override
     public double getDeltaX(double x, double y, double z) {
-        return -s*(x + y);
+        return -s * (x + y);
     }
+
     @Override
     public double getDeltaY(double x, double y, double z) {
         return -y - s * x * z;
@@ -35,6 +39,7 @@ public class BurkleShawAttractorPoint extends BasePointType implements EnableToG
     public double getDeltaZ(double x, double y, double z) {
         return s * x * y + v;
     }
+
     public Point getNext(double x, double y, double z, double deltaTime) {
         double dx = this.getDeltaX(x, y, z);
         double dy = this.getDeltaY(x, y, z);
