@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public abstract class BasePointType implements PointType{
     private Render render;
-    private ArrayList<ArrayList<Integer>> startedPoints = new ArrayList<>();
+    protected ArrayList<ArrayList<Integer>> startedPoints = new ArrayList<>();
     private int centerX;
     private int centerY;
     private int centerZ;
@@ -44,7 +44,7 @@ public abstract class BasePointType implements PointType{
         Integer X = (int)(x * scope);
         Integer Y = (int)(y * scope);
         Integer Z = (int)(z * scope);
-        if(startedPoints.size() <= 100){
+        if(startedPoints.size() <= 1000){
 
             ArrayList<Integer> toAdd = new ArrayList<>();
             toAdd.add(X);
